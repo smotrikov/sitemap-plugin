@@ -1,6 +1,5 @@
 <?php namespace RainLab\Sitemap\Classes;
 
-use Model;
 use Event;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -23,6 +22,11 @@ class DefinitionItem
      * @var boolean Determines whether the auto-generated items could have subitems.
      */
     public $nesting;
+
+    /**
+     * @var array|bool sites includes a lookup for other sites.
+     */
+    public $sites = false;
 
     /**
      * @var string Specifies the item type - URL, static page, etc.
@@ -102,7 +106,7 @@ class DefinitionItem
      */
     public function getTypeOptions()
     {
-        $result = ['url' => 'URL'];
+        $result = ['url' => trans('rainlab.sitemap::lang.item.url')];
         $apiResult = Event::fire('pages.menuitem.listTypes');
 
         if (is_array($apiResult)) {
@@ -112,6 +116,11 @@ class DefinitionItem
                 }
 
                 foreach ($typeList as $typeCode => $typeName) {
+                    // In case newer syntax leaks through
+                    if (!is_string($typeName)) {
+                        continue;
+                    }
+
                     $result[$typeCode] = $typeName;
                 }
             }
@@ -147,7 +156,7 @@ class DefinitionItem
 
                         foreach ($value as $page) {
                             $baseName = $page->getBaseFileName();
-                            $pos = strrpos ($baseName, '/');
+                            $pos = strrpos($baseName, '/');
 
                             $dir = $pos !== false ? substr($baseName, 0, $pos).' / ' : null;
                             $cmsPages[$baseName] = strlen($page->title)
