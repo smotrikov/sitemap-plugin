@@ -18,8 +18,15 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.4",
+        "ext-xmlwriter": "*",
+        "ext-xmlreader": "*",
         "composer/installers": "~1.0"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
 }

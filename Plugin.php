@@ -25,6 +25,11 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function register()
+    {
+        $this->registerConsoleCommand('sitemap.generate', \Rainlab\Sitemap\Console\GenerateSitemap::class);
+    }
+
     /**
      * Registers administrator permissions for this plugin.
      *
@@ -57,5 +62,14 @@ class Plugin extends PluginBase
                 'permissions' => ['rainlab.sitemap.access_definitions'],
             ]
         ];
+    }
+
+    /**
+     * @param $schedule
+     * @return void
+     */
+    public function registerSchedule($schedule)
+    {
+        $schedule->command('sitemap:generate')->daily();
     }
 }
