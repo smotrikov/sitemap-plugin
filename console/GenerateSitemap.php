@@ -195,6 +195,8 @@ class GenerateSitemap extends Command
 
         if ($count > Definition::MAX_URLS) {
             $this->split();
+        } else {
+            copy(temp_path('sitemap.tmp'), public_path('sitemap.xml'));
         }
 
         if (file_exists(temp_path('sitemap.tmp'))) {
