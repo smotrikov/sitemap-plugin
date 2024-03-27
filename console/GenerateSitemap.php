@@ -28,7 +28,7 @@ class GenerateSitemap extends Command
     {
         parent::__construct();
 
-        $this->rootUrl = Config::get('app.url');
+        $this->rootUrl = rtrim(Config::get('app.url'), '/') ;
     }
 
     /**
@@ -37,7 +37,7 @@ class GenerateSitemap extends Command
      */
     private function resolveUrl(string $uri): string
     {
-        return rtrim($this->rootUrl, '/') . '/' . ltrim($uri, '/');
+        return strpos($uri, $this->rootUrl) === false ? $this->rootUrl. '/' . ltrim($uri, '/') : $uri;
     }
 
 
