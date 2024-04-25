@@ -83,7 +83,11 @@ class GenerateSitemap extends Command
     {
         $theme = Theme::getActiveTheme()->getDirName();
 
-        $definition = Definition::where('theme', $theme)->firstOrFail();
+        $definition = Definition::where('theme', $theme)->first();
+        if (!$definition) {
+            $this->info('Sitemap: definition is empty.');
+            return;
+        }
 
         if (!$items = $definition->items) {
             return;
