@@ -76,18 +76,17 @@ class GenerateSitemap extends Command
 
     /**
      * Execute the console command.
-     * @return bool
      * @throws \ApplicationException
      * @throws \DOMException
      */
-    public function handle(): bool
+    public function handle()
     {
         $theme = Theme::getActiveTheme()->getDirName();
 
         $definition = Definition::where('theme', $theme)->firstOrFail();
 
         if (!$items = $definition->items) {
-            return false;
+            return;
         }
 
         unset($definition);
@@ -204,8 +203,6 @@ class GenerateSitemap extends Command
         }
 
         $this->info('Sitemap(s) successfully generated');
-
-        return true;
     }
 
     /**
